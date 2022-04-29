@@ -1,23 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ESNext",
     "module": "ESNext",
     "sourceMap": true,
+    "useUnknownInCatchVariables": false,
+    "moduleResolution": "node",
+    "baseUrl": ".",
     "strict": true,
     "strictNullChecks": true,
     "declaration": false,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react",
-    "types": [
-      "jest",
-      "./typings"
-    ],
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "jsx": "react"
   },
   "exclude": [
     "node_modules",

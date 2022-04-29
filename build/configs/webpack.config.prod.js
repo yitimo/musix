@@ -1,6 +1,7 @@
 const path = require('path')
 const webpackMerge = require('webpack-merge').merge
 const TerserJSPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 const baseConfig = require('./webpack.config.base')
 
@@ -9,10 +10,6 @@ const config = webpackMerge(baseConfig, {
   mode: 'production',
   devtool: 'source-map',
   target: 'web',
-  entry: {
-    index: './pages/index/index.tsx',
-    player: './pages/player/index.tsx',
-  },
   output: {
     filename: 'static/js/[name].[contenthash].js',
     chunkFilename: 'static/js/[name].[contenthash].js',
@@ -20,12 +17,11 @@ const config = webpackMerge(baseConfig, {
   plugins: [],
   optimization: {
     minimize: true,
-    minimizer: [new TerserJSPlugin()],
+    minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin()],
     splitChunks: {
       cacheGroups: {
         defaultVendors: false,
         default: false,
-        // TODO: split react react-dom and other from node_modules
       },
     },
   },
