@@ -9,7 +9,6 @@ const baseConfig = require('./webpack.config.base')
 const config = webpackMerge(baseConfig, {
   mode: 'production',
   devtool: 'source-map',
-  target: 'web',
   output: {
     filename: 'static/js/[name].[contenthash].js',
     chunkFilename: 'static/js/[name].[contenthash].js',
@@ -17,7 +16,7 @@ const config = webpackMerge(baseConfig, {
   plugins: [],
   optimization: {
     minimize: true,
-    minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin()],
+    minimizer: [new CssMinimizerPlugin()],
     splitChunks: {
       cacheGroups: {
         defaultVendors: false,

@@ -3,13 +3,19 @@ const webpackMerge = require('webpack-merge').merge
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader');
+
+const getPages = require('../utils/getPages')
 
 const isProd = process.env.NODE_ENV === 'production'
 
+const pages = getPages()
+
 /** @type {import('webpack').Configuration} */
 const config = webpackMerge({
+  target: 'web',
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
     modules: ['node_modules'],
   },
   output: {
@@ -17,17 +23,17 @@ const config = webpackMerge({
     hashDigestLength: 8,
   },
   entry: {
-    index: './pages/index/index.tsx',
-    player: './pages/player/index.tsx',
+    global: path.resolve(__dirname, '../../pages/global.ts'),
+    ...pages.reduce((r, n) => ({ ...r, [n.name]: n.entry }), {}),
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js(x?))$/,
         use: [{
           loader: 'babel-loader',
         }],
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
       },
       {
         test: /\.ts(x?)$/,
@@ -38,11 +44,20 @@ const config = webpackMerge({
           },
           {
             loader: 'ts-loader',
+            options: {
+              appendTsSuffixTo: [/\.vue$/],
+            },
           },
         ],
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.vue$/,
+        use: [{
+          loader: 'vue-loader',
+        }],
+      },
+      {
+        test: /\.(css|less)$/,
         use: [
           isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -52,16 +67,13 @@ const config = webpackMerge({
             },
           },
           {
-            loader: 'sass-loader',
-            options: {
-              additionalData: `@import './pages/variables.scss';`,
-            },
+            loader: 'less-loader',
           },
         ],
-        exclude: /\.module\.scss$/,
+        exclude: /\.module\.less$/,
       },
       {
-        test: /\.module\.(css|scss)$/,
+        test: /\.module\.(css|less)$/,
         use: [
           isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -72,28 +84,20 @@ const config = webpackMerge({
             },
           },
           {
-            loader: 'sass-loader',
-            options: {
-              additionalData: `@import 'pages/variables.scss';`,
-            },
+            loader: 'less-loader',
           },
         ],
       },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'pages/template.html',
-      filename: 'index.html',
-      chunks: ['index'],
+    ...pages.map((page) => new HtmlWebpackPlugin({
+      template: page.template,
+      filename: `${page.name}.html`,
+      chunks: ['global', page.name],
       inject: 'body',
-    }),
-    new HtmlWebpackPlugin({
-      template: 'pages/template.html',
-      filename: 'player.html',
-      chunks: ['player'],
-      inject: 'body',
-    }),
+    })),
+    new VueLoaderPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -109,16 +113,6 @@ const config = webpackMerge({
       ],
     }),
   ],
-  devServer: {
-    static: {
-      publicPath: '/',
-    },
-    hot: true,
-    allowedHosts: 'all',
-    host: '0.0.0.0',
-    port: 3000,
-    webSocketServer: { type: 'ws', options: { port: 3000 } },
-  },
 })
 
 module.exports = config
