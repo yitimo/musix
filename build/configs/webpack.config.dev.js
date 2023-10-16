@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 const webpackMerge = require('webpack-merge').merge
 
 const baseConfig = require('./webpack.config.base')
@@ -21,7 +21,6 @@ const config = webpackMerge(baseConfig, {
     allowedHosts: 'all',
     // host: '0.0.0.0',
     port: 3000,
-    webSocketServer: { type: 'ws', options: { port: 3000 } },
   },
 })
 

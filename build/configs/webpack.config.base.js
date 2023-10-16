@@ -3,7 +3,8 @@ const webpackMerge = require('webpack-merge').merge
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { VueLoaderPlugin } = require('vue-loader');
+const EslintWebpackPlugin = require('eslint-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const getPages = require('../utils/getPages')
 
@@ -54,6 +55,11 @@ const config = webpackMerge({
         test: /\.vue$/,
         use: [{
           loader: 'vue-loader',
+          options: {
+            compilerOptions: {
+              preserveWhitespace: false,
+            },
+          },
         }],
       },
       {
@@ -65,6 +71,9 @@ const config = webpackMerge({
             options: {
               url: false,
             },
+          },
+          {
+            loader: 'postcss-loader',
           },
           {
             loader: 'less-loader',
@@ -84,6 +93,9 @@ const config = webpackMerge({
             },
           },
           {
+            loader: 'postcss-loader',
+          },
+          {
             loader: 'less-loader',
           },
         ],
@@ -93,10 +105,11 @@ const config = webpackMerge({
   plugins: [
     ...pages.map((page) => new HtmlWebpackPlugin({
       template: page.template,
-      filename: `${page.name}.html`,
+      filename: page.filename,
       chunks: ['global', page.name],
       inject: 'body',
     })),
+    new EslintWebpackPlugin(),
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
       patterns: [

@@ -14,15 +14,8 @@
     "strictNullChecks": true,
     "declaration": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
     "jsx": "react"
   },
-  "include": [
-    "pages/**/*.ts",
-    "pages/**/*.tsx",
-    "pages/**/*.vue",
-    "typings"
-  ],
   "exclude": [
     "node_modules",
     "dist"

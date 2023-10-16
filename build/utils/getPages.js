@@ -1,6 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 
+/**
+ * @returns {Array<{name: string; filename: string; template: string; entry: string;}>} pages
+ */
 function main() {
     const pagePath = path.resolve(__dirname, '../../pages')
     const rs = []
@@ -30,6 +33,7 @@ function main() {
              */
             rs.push({
                 name,
+                filename: name === 'index' ? 'index.html' : `${name}/index.html`,
                 entry: entryFile ? path.resolve(basePath, entryFile) : path.resolve(pagePath, 'defaultEntry.ts'),
                 template: templateFile ? path.resolve(basePath, templateFile) : path.resolve(pagePath, 'defaultTemplate.html'),
             })
