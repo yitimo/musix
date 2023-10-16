@@ -34,7 +34,7 @@ const config = webpackMerge({
         use: [{
           loader: 'babel-loader',
         }],
-        // exclude: /node_modules/,
+        exclude: /node_modules/,
       },
       {
         test: /\.ts(x?)$/,
@@ -61,6 +61,7 @@ const config = webpackMerge({
             },
           },
         }],
+        exclude: /node_modules/,
       },
       {
         test: /\.(css|less)$/,
@@ -107,6 +108,7 @@ const config = webpackMerge({
       template: page.template,
       filename: page.filename,
       chunks: ['global', page.name],
+      minify: false,
       inject: 'body',
     })),
     new EslintWebpackPlugin(),

@@ -1,6 +1,5 @@
-const path = require('path')
 const webpackMerge = require('webpack-merge').merge
-const TerserJSPlugin = require('terser-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 const baseConfig = require('./webpack.config.base')
@@ -13,7 +12,12 @@ const config = webpackMerge(baseConfig, {
     filename: 'static/js/[name].[contenthash].js',
     chunkFilename: 'static/js/[name].[contenthash].js',
   },
-  plugins: [],
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'static/css/[name].[contenthash].css',
+      chunkFilename: 'static/css/[name].[contenthash].css',
+    }),
+  ],
   optimization: {
     minimize: true,
     minimizer: [new CssMinimizerPlugin()],
