@@ -1,6 +1,3 @@
-module.exports = {
-    presets: [
-        '@babel/preset-env',
-        '@babel/preset-react',
-    ],
-}
+const { buildeBabelRC } = require('@yitimo/cli/scripts/rcBuilder')
+
+module.exports = buildeBabelRC()
