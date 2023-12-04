@@ -1,19 +1,21 @@
 <template>
-  <div class="test-style">
+  <div class="text">
     hello player
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 
-export default defineComponent({
-  name: 'App',
-})
 </script>
 
 <style lang="less" scoped>
-.test-style {
-  color: red;
+.text {
+  position: absolute;
+  font-size: 36px;
+  color: #333333;
+  font-weight: 500;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
