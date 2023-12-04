@@ -1,24 +1,3 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
-    "sourceMap": true,
-    "useUnknownInCatchVariables": false,
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "strict": true,
-    "strictNullChecks": true,
-    "declaration": false,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
-    "jsx": "react"
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "extends": "@yitimo/cli/scripts/baseTsconfig.json"
 }
